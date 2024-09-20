@@ -74,16 +74,22 @@
                         <div class="card-body overflow-auto">
 
                             {% for item in nowplaying.song_history %}
-                            <div class="d-flex align-items-center">
-                                <strong class="order me-2">{{ forloop.counter }}</strong>
+                            <div class="d-flex align-items-center my-2">
+                                {% if forloop.counter < 10 %}
+                                    <strong class="order me-3">{{ forloop.counter }}</strong>
+                                {% else %}
+                                    <strong class="order me-2">{{ forloop.counter }}</strong>
+                                {% endif %}
                                 <a href="{{ item.song.art }}" class="me-3" target="_blank" title="Enlarge Album Art">
-                                    <img src="{{ item.song.art }}" loading="lazy" alt="" width="50" height="50">
+                                    <img src="{{ item.song.art }}" class="rounded" loading="lazy" alt="" width="60" height="60">
+                                </a>
                                 </a>
                                 <div class="d-flex flex-column w-100">
-                                    <strong>{{ item.song.title }}</strong>
-                                    <span>{{ item.song.text }}</span>
+                                    <strong class="text-truncate">{{ item.song.title }}</strong>
+                                    <span class="text-truncate fs-6">{{ item.song.artist }}</span>
+                                    <span class="text-truncate fs-6">{{ item.song.album }}</span>
                                 </div>
-                                <small id="time-diff-{{ item.sh_id }}" class="text-muted ms-auto"> minutes ago</small>
+                                <small id="time-diff-{{ item.sh_id }}" class="text-muted ms-auto text-nowrap"> minutes ago</small>
                                 <span id="timestamp-{{ item.sh_id }}" style="display:none;">{{ item.played_at }}</span>
                             </div>                            
                             {% empty %}
