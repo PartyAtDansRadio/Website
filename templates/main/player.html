@@ -13,6 +13,10 @@
     </head>
     <body style="background-image: radial-gradient(circle, rgb(59, 89, 152) 0%, rgb(120, 204, 235) 100%)">
 
+
+
+        {{ music }}
+
         <div class="container px-3 mt-4 mb-4" style="background-color: rgb(255, 255, 255); border: 1px solid rgb(255, 255, 255); border-radius: 10px;">
             <div class="row">
                 <header class="d-flex justify-content-center py-3 mb-4 border-bottom">
@@ -21,7 +25,7 @@
                         <img src="{% static 'main/images/logo.png' %}" class="img-fluid" alt="Party@Dans" style="max-width: 400px;">
                         <span class="fs-2 pb-2 ps-3">Rock Radio</span>
                     </a>
-                    <a href="https://manager.padradio.com/public/padradio" class="btn btn-primary fs-4 my-3">
+                    <a href="{{ azuracast.station.public_player_url }}" class="btn btn-primary fs-4 my-3">
                         <i class="bi bi-play-fill"></i>Mini Player
                     </a>
                 </header>
@@ -29,7 +33,7 @@
             <div class="row">
                 <div class="col-md-4 h-100">
                     <section class="card mb-3 h-100" role="region" data-bs-theme="light">
-                        <div class="card-header text-bg-primary">
+                        <div class="card-header text-bg-primary py-1">
                         <h2 class="card-title">Links</h2>
                         </div>
                         <div class="card-body overflow-auto">
@@ -68,7 +72,7 @@
                         </div>
                     </section>
                     <section class="card mb-3 h-100" role="region" data-bs-theme="light">
-                        <div class="card-header text-bg-primary">
+                        <div class="card-header text-bg-primary py-1">
                         <h2 class="card-title">Recently Played</h2>
                         </div>
                         <div class="card-body overflow-auto">
@@ -101,35 +105,86 @@
                 </div>
                 <div class="col-md-8">
                     <section class="card mb-3" role="region" data-bs-theme="light">
-                        <div class="card-header text-bg-primary">
-                            <h2 class="card-title">Currently Playing</h2>
+                        <div class="card-header text-bg-primary d-flex justify-content-between align-items-center py-2">
+                            <h2 class="card-title mb-0">Currently Playing</h2>
+                            {% if azuracast.now_playing.is_request %}
+                                <span class="card-subtitle"><i class="bi bi-boombox me-2"></i>Listener Request</span>
+                            {% endif %}
                         </div>
                         <div class="card-body pb-0">
 
-                        {% if azuracast.error %}
-                            <p>{{ azuracast.error }}</p>
-                        {% else %}
-                            <p>{{ azuracast.now_playing.song.title }} by {{ azuracast.now_playing.song.artist }}</p>
-                        {% endif %}
+                            <div class="now-playing-details d-flex align-items-center">
+                                <div class="now-playing-art me-3">
+                                    <a href="{{ azuracast.now_playing.song.art }}" class="album-art" target="_blank" data-fancybox="gallery" aria-label="Enlarge Album Art" title="Enlarge Album Art" style="--453abce5: 40px;">
+                                        <img class="album_art rounded" src="{{ azuracast.now_playing.song.art }}" loading="lazy" alt="" width="75" height="75">
+                                    </a>
+                                </div>
+                                <div class="now-playing-main flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h4 class="now-playing-title fs-5 mb-0">{{ azuracast.now_playing.song.title }}</h4>
+                                        <span class="now-playing-genre text-muted ms-3">{{ azuracast.now_playing.song.genre }}</span>
+                                    </div>
+                                    <h5 class="now-playing-artist fs-6">{{ azuracast.now_playing.song.text }}</h5>
+                                    <div class="time-display d-flex justify-content-between align-items-center">
+                                        <div class="time-display-played text-secondary">{{ azuracast.now_playing.elapsed }}</div>
+                                        <div class="time-display-progress flex-grow-1 mx-2">
+                                            <div class="progress h-5">
+                                                <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ azuracast.now_playing.percent }}%;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="time-display-total text-secondary">{{ azuracast.now_playing.duration }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="ms-2">
+                            <div class="radio-controls d-flex mb-2">
+                                <div class="flex-grow-1">
+                                    <button type="button" title="Play" aria-label="Play" class="btn p-0 radio-control-play-button btn-xl">
+                                        <i class="bi bi-play-circle fs-2"></i>
+                                    </button>
+                                </div>
+                                <div class="d-flex align-items-center" style="width: 50%;">
+                                    <div class="flex-shrink-0 mx-2">
+                                        <button type="button" class="btn p-0 text-secondary" aria-label="Mute">
+                                            <i class="bi bi-volume-up-fill fs-2"></i>
+                                        </button>
+                                    </div>
+                                    <div class="flex-fill radio-control-volume-slider me-4">
+                                        <input type="range" title="Volume" class="form-range" min="0" max="100" step="1">
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </section>
-                    <section class="card mb-3" role="region" data-bs-theme="light">
-                        <div class="card-header text-bg-primary">
-                            <h2 class="card-title">Up Next</h2>
-                        </div>
-                        <div class="card-body pb-0">
 
-                        {% if azuracast.error %}
-                            <p>{{ azuracast.error }}</p>
-                        {% else %}
-                            <p>{{ azuracast.playing_next.song.title }} by {{ azuracast.playing_next.song.artist }}</p>
-                        {% endif %}
-
-                        </div>
-                    </section>
                     <section class="card mb-3 pb-3" role="region" data-bs-theme="light">
-                        <div class="card-header text-bg-primary">
+                        <div class="card-header text-bg-primary d-flex justify-content-between align-items-center">
+                            <h2 class="card-title mb-0">Playing Next</h2>
+                            {% if azuracast.playing_next.is_request %}
+                                <span class="card-subtitle"><i class="bi bi-boombox me-2"></i>Listener Request</span>
+                            {% endif %}
+                        </div>
+                        <div class="card-body pb-0">
+                            <div class="d-flex align-items-center my-1">
+                                <a href="{{ azuracast.playing_next.song.art }}" class="me-3" target="_blank" title="Enlarge Album Art">
+                                    <img src="{{ azuracast.playing_next.song.art }}" class="rounded" loading="lazy" alt="" width="75" height="75">
+                                </a>
+                                <div class="d-flex flex-column w-100">
+                                    <strong class="text-truncate">{{ azuracast.playing_next.song.title }}</strong>
+                                    <span class="text-truncate fs-6">{{ azuracast.playing_next.song.artist }}</span>
+                                    <span class="text-truncate fs-6">{{ azuracast.playing_next.song.album }}</span>
+                                </div>
+                                <div class="d-flex flex-column ms-auto text-end">
+                                    <small class="text-muted text-nowrap">{{ azuracast.playing_next.song.genre }}</small>
+                                    <small class="text-muted text-nowrap">{{ azuracast.playing_next.duration }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card mb-3 pb-3" role="region" data-bs-theme="light">
+                        <div class="card-header text-bg-primary  py-1">
                             <h2 class="card-title">Make a Request</h2>
                         </div>
                         <div class="card-body">

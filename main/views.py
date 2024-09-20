@@ -34,5 +34,9 @@ class PlayerView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['azuracast'] = self.AzuraCastAPI.command('nowplaying/1')
+        azuracast = self.AzuraCastAPI.command('nowplaying/1')
+        elapsed = azuracast['now_playing']['elapsed']
+        duration = azuracast['now_playing']['duration']
+        azuracast['now_playing']['percent'] = (elapsed / duration) * 100 if duration > 0 else 0
+        context['azuracast'] = azuracast
         return context
