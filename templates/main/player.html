@@ -10,6 +10,22 @@
     </head>
     <body style="background-image: radial-gradient(circle, rgb(59, 89, 152) 0%, rgb(120, 204, 235) 100%)">
 
+
+
+        {% if nowplaying.error %}
+            <p>{{ nowplaying.error }}</p>
+        {% else %}
+            <h2>Now Playing</h2>
+            <ul>
+            <li>{{ nowplaying.station.name }}: {{ nowplaying.now_playing.song.title }} by {{ nowplaying.now_playing.song.artist }}</li>
+            </ul>
+        {% endif %}
+
+        <h2>Song History</h2>
+
+
+
+
         <div class="container px-3 mt-4 mb-4" style="background-color: rgb(255, 255, 255); border: 1px solid rgb(255, 255, 255); border-radius: 10px;">
             <div class="row">
                 <header class="d-flex justify-content-center py-3 mb-4 border-bottom">
@@ -69,7 +85,29 @@
                         <h2 class="card-title">Recently Played</h2>
                         </div>
                         <div class="card-body overflow-auto">
-                            <iframe src="https://manager.padradio.com/public/padradio/history?theme=light" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 300px; border: 0;"></iframe>
+
+                            {% for item in nowplaying.song_history %}
+                            <div class="song">
+                                <strong class="order">{{forloop.counter}}</strong>
+                                <a data-v-63373fba="" href="{{item.song.art}}" class="album-art me-3" target="_blank" data-fancybox="gallery" aria-label="Enlarge Album Art" title="Enlarge Album Art" style="--453abce5: 40px;">
+                                <img data-v-63373fba="" class="album_art" src="{{item.song.art}}" loading="lazy" alt="" width="50" height="50"></a>
+                                <div class="name">
+                                    <strong>{{ item.song.title }}</strong>
+                                    <span>{{ item.song.text }}</span>
+                                </div>
+                                <small class="date-played text-muted ms-3">{{ item.played_at }} 7 minutes ago</small>
+                            </div>
+                            {% empty %}
+                            <li>No song history available.</li>
+                            {% endfor %}
+
+                                        <p></p>
+                                          <!-- Add this line -->
+                                    </li>
+
+                            </ul>
+                            </ul>
+                        </div>
                         </div>
                     </section>
                 </div>
@@ -79,7 +117,11 @@
                             <h2 class="card-title">Currently Playing</h2>
                         </div>
                         <div class="card-body pb-0">
-                            <iframe src="https://manager.padradio.com/public/padradio/embed?theme=light" frameborder="0" allowtransparency="true" style="width: 100%; min-height: 100px; border: 0;"></iframe>
+
+
+
+
+
                         </div>
                     </section>
                     <section class="card mb-3 pb-3" role="region" data-bs-theme="light">
@@ -87,7 +129,9 @@
                             <h2 class="card-title">Make a Request</h2>
                         </div>
                         <div class="card-body">
-                            <iframe src="https://manager.padradio.com/public/padradio/embed-requests?theme=light" allowtransparency="false" frameborder="0" style="width: 100%; border: 0px; min-height: 50vh;"></iframe>
+
+
+
                         </div>
                     </section>
                 </div>
