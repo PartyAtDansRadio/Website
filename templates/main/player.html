@@ -11,7 +11,6 @@
     <body style="background-image: radial-gradient(circle, rgb(59, 89, 152) 0%, rgb(120, 204, 235) 100%)">
 
 
-
         {% if nowplaying.error %}
             <p>{{ nowplaying.error }}</p>
         {% else %}
@@ -20,10 +19,6 @@
             <li>{{ nowplaying.station.name }}: {{ nowplaying.now_playing.song.title }} by {{ nowplaying.now_playing.song.artist }}</li>
             </ul>
         {% endif %}
-
-        <h2>Song History</h2>
-
-
 
 
         <div class="container px-3 mt-4 mb-4" style="background-color: rgb(255, 255, 255); border: 1px solid rgb(255, 255, 255); border-radius: 10px;">
