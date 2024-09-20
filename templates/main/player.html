@@ -73,7 +73,7 @@
                         </div>
                         <div class="card-body overflow-auto">
 
-                            {% for item in nowplaying.song_history %}
+                            {% for item in azuracast.song_history %}
                             <div class="d-flex align-items-center my-2">
                                 {% if forloop.counter < 10 %}
                                     <strong class="order me-3">{{ forloop.counter }}</strong>
@@ -106,10 +106,24 @@
                         </div>
                         <div class="card-body pb-0">
 
-                        {% if nowplaying.error %}
-                            <p>{{ nowplaying.error }}</p>
+                        {% if azuracast.error %}
+                            <p>{{ azuracast.error }}</p>
                         {% else %}
-                            <p>{{ nowplaying.now_playing.song.title }} by {{ nowplaying.now_playing.song.artist }}</p>
+                            <p>{{ azuracast.now_playing.song.title }} by {{ azuracast.now_playing.song.artist }}</p>
+                        {% endif %}
+
+                        </div>
+                    </section>
+                    <section class="card mb-3" role="region" data-bs-theme="light">
+                        <div class="card-header text-bg-primary">
+                            <h2 class="card-title">Up Next</h2>
+                        </div>
+                        <div class="card-body pb-0">
+
+                        {% if azuracast.error %}
+                            <p>{{ azuracast.error }}</p>
+                        {% else %}
+                            <p>{{ azuracast.playing_next.song.title }} by {{ azuracast.playing_next.song.artist }}</p>
                         {% endif %}
 
                         </div>
@@ -127,8 +141,9 @@
                 </div>
             </div>
             <footer class="footer mt-auto pb-3">
-                <div class="container">
+                <div class="container d-flex justify-content-between">
                     <span class="text-muted">Party @ Dans Rock Radio Player. <a class="text-decoration-none" href="https://github.com/PartyAtDansRadio/Website">(A GPL3 Github Project)</a></span>
+                    <span class="text-muted">Currently Listening: {{ azuracast.listeners.total }}</span>
                 </div>
             </footer>
         </div>
