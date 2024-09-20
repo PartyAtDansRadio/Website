@@ -7,4 +7,4 @@ docker image prune -f
 docker build -t padplayer .
 
 # Run the Docker container with volume mount in detached mode
-docker run -d -p 8000:8000 -v $(pwd):/usr/src/padplayer --name padplayer_container --replace padplayer
+docker run -d -p 8000:8000 -v $(pwd):/usr/src/padplayer --name padplayer_container padplayer
